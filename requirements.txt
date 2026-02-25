@@ -1,10 +1,10 @@
-
 fastapi
 uvicorn
 apscheduler
 python-jose
-passlib[bcrypt]
+passlib[argon2]
 python-multipart
 dateparser
 jinja2
 plyer
+argon2-cffi
