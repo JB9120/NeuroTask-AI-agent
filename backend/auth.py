@@ -1,36 +1,28 @@
 from jose import jwt
 from passlib.context import CryptContext
 import datetime
-import hashlib
 
-SECRET = "CHANGE_THIS_SECRET"
+SECRET = "CHANGE_THIS_SECRET_TO_LONG_RANDOM_STRING"
 ALGORITHM = "HS256"
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Use Argon2 instead of bcrypt
+pwd_context = CryptContext(
+    schemes=["argon2"],
+    deprecated="auto"
+)
 
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
 
-# SHA256 pre-hash to avoid bcrypt 72 byte limit
-def normalize_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+def verify_password(password: str, hashed: str) -> bool:
+    return pwd_context.verify(password, hashed)
 
-
-def hash_password(password):
-    normalized = normalize_password(password)
-    return pwd_context.hash(normalized)
-
-
-def verify_password(password, hashed):
-    normalized = normalize_password(password)
-    return pwd_context.verify(normalized, hashed)
-
-
-def create_token(user_id):
+def create_token(user_id: int) -> str:
     payload = {
         "user_id": user_id,
         "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
     }
     return jwt.encode(payload, SECRET, algorithm=ALGORITHM)
 
-
-def verify_token(token):
+def verify_token(token: str):
     return jwt.decode(token, SECRET, algorithms=[ALGORITHM])
