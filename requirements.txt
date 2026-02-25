@@ -1,0 +1,10 @@
+
+fastapi
+uvicorn
+apscheduler
+python-jose
+passlib[bcrypt]
+python-multipart
+dateparser
+jinja2
+plyer
