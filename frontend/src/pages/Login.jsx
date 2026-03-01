@@ -10,41 +10,23 @@ export default function Login() {
 
   const login = async () => {
 
-  try {
+  const formData = new URLSearchParams()
 
-    setLoading(true)
-    setError("")
+  formData.append("username", email)
+  formData.append("password", password)
 
-    const formData = new URLSearchParams()
-
-    formData.append("username", email)
-    formData.append("password", password)
-
-    const res = await api.post(
-      "/auth/login",
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+  const res = await api.post(
+    "/auth/login",
+    formData,
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
       }
-    )
+    }
+  )
 
-    loginStore(res.data.access_token)
-
-    window.location = "/"
-
-  }
-  catch(err){
-
-    setError(
-      err.response?.data?.detail ||
-      "Login failed"
-    )
-  }
-  finally{
-    setLoading(false)
-  }
+  loginStore(res.data.access_token)
+  window.location = "/"
 }
 
   return (
