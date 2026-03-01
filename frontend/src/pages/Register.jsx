@@ -7,10 +7,14 @@ export default function Register() {
   const [password,setPassword]=useState("")
 
   const register = async () => {
-    await api.post("/auth/register",{email,password})
-    alert("Registered successfully")
-    window.location="/login"
-  }
+
+  await api.post("/auth/register", {
+    email: email,
+    password: password
+  })
+
+  window.location = "/login"
+}
 
   return (
     <div>
