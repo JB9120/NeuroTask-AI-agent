@@ -8,6 +8,11 @@ setup_logging()
 
 app = FastAPI(title="NeuroTask Enterprise SaaS")
 
+origins = [
+    "http://localhost:5173",
+    "https://neuro-task-ai-agent.vercel.app"
+]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -24,3 +29,4 @@ app.include_router(health.router, tags=["health"])
 @app.get("/")
 def root():
     return {"message": "NeuroTask Enterprise running"}
+    
