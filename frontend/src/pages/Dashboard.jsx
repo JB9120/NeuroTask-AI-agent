@@ -1,11 +1,6 @@
-
 import React from "react"
-
-export default function Dashboard(){
- return (
-   <div style={{padding:20}}>
-     <h1>NeuroTask Enterprise SaaS</h1>
-     <p>System running successfully</p>
-   </div>
- )
-}
+export default function Dashboard({onNavigate}){
+return(<div style={{padding:20}}>
+<h1>NeuroTask Dashboard</h1>
+<button onClick={()=>{localStorage.removeItem("token");onNavigate("login")}}>Logout</button>
+</div>)}
