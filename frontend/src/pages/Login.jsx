@@ -1,19 +1,25 @@
-import React,{useState} from "react"
-import API from "../api/client"
-export default function Login({onNavigate}){
-const [email,setEmail]=useState("")
-const [password,setPassword]=useState("")
-const login=async()=>{
- try{
-  const res=await API.post("/auth/login",{email,password})
-  localStorage.setItem("token",res.data.access_token)
-  onNavigate("dashboard")
- }catch{alert("Login failed")}
+
+import { useState } from "react"
+import api from "../services/api"
+import { useAuthStore } from "../store/authStore"
+
+export default function Login() {
+  const loginStore = useAuthStore(state => state.login)
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+
+  const login = async () => {
+    const res = await api.post("/auth/login",{email,password})
+    loginStore(res.data.access_token)
+    window.location="/"
+  }
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <input placeholder="email" onChange={e=>setEmail(e.target.value)}/>
+      <input placeholder="password" type="password" onChange={e=>setPassword(e.target.value)}/>
+      <button onClick={login}>Login</button>
+    </div>
+  )
 }
-return(<div style={{padding:20}}>
-<h2>Login</h2>
-<input placeholder="Email" onChange={e=>setEmail(e.target.value)}/><br/><br/>
-<input placeholder="Password" type="password" onChange={e=>setPassword(e.target.value)}/><br/><br/>
-<button onClick={login}>Login</button>
-<p style={{cursor:"pointer",color:"blue"}} onClick={()=>onNavigate("register")}>Register</p>
-</div>)}

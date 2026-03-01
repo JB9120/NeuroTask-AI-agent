@@ -1,18 +1,23 @@
-import React,{useState} from "react"
-import API from "../api/client"
-export default function Register({onNavigate}){
-const [email,setEmail]=useState("")
-const [password,setPassword]=useState("")
-const register=async()=>{
- try{
-  await API.post("/auth/register",{email,password})
-  alert("Registered")
-  onNavigate("login")
- }catch{alert("Register failed")}
+
+import { useState } from "react"
+import api from "../services/api"
+
+export default function Register() {
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+
+  const register = async () => {
+    await api.post("/auth/register",{email,password})
+    alert("Registered successfully")
+    window.location="/login"
+  }
+
+  return (
+    <div>
+      <h2>Register</h2>
+      <input placeholder="email" onChange={e=>setEmail(e.target.value)}/>
+      <input placeholder="password" type="password" onChange={e=>setPassword(e.target.value)}/>
+      <button onClick={register}>Register</button>
+    </div>
+  )
 }
-return(<div style={{padding:20}}>
-<h2>Register</h2>
-<input placeholder="Email" onChange={e=>setEmail(e.target.value)}/><br/><br/>
-<input placeholder="Password" type="password" onChange={e=>setPassword(e.target.value)}/><br/><br/>
-<button onClick={register}>Register</button>
-</div>)}
