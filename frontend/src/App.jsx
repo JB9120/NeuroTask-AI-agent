@@ -1,11 +1,39 @@
-import React, { useState } from "react"
-import Login from "./pages/Login.jsx"
-import Register from "./pages/Register.jsx"
-import Dashboard from "./pages/Dashboard.jsx"
 
-export default function App(){
-  const [page, setPage] = useState("login")
-  if(page==="login") return <Login onNavigate={setPage}/>
-  if(page==="register") return <Register onNavigate={setPage}/>
-  if(page==="dashboard") return <Dashboard onNavigate={setPage}/>
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import Dashboard from "./pages/Dashboard"
+import Todos from "./pages/Todos"
+import Admin from "./pages/Admin"
+import ProtectedRoute from "./components/ProtectedRoute"
+import Navbar from "./components/Navbar"
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/todos" element={
+          <ProtectedRoute>
+            <Todos />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <Admin />
+          </ProtectedRoute>
+        } />
+      </Routes>
+    </BrowserRouter>
+  )
 }
